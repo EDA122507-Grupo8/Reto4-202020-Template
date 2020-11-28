@@ -31,6 +31,7 @@ from App import controller
 from DISClib.ADT import stack
 import timeit
 assert config
+import model as mod
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -62,7 +63,7 @@ def printMenu():
     print("2- Cargar informacion")
     print("3- Buscar cantidad de cluster de Viajes")
     print("4- Buscar ruta turistica Circular")
-    print("5- Buscar ruta turistica de menor tiempo")
+    print("5- Buscar estaciones críticas")
     print("6- Buscar ruta turistica por resistencia")
     print("7- buscar rutas por rango de edades")
     print("8- Buscar ruta de interes turístico")
@@ -82,9 +83,9 @@ def optionTwo():
     print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
     sys.setrecursionlimit(recursionLimit)
     print('El limite de recursion se ajusta a: ' + str(recursionLimit))
+
     
-    
-    
+
 def optionThree():
         v1=input("Ingrese estación 1(id-name)\n")
         v2=input("Ingrese estación 2(id-name)\n")
@@ -92,7 +93,7 @@ def optionThree():
 
 
 def optionFourOne(graph, vertex, initialTime, finalTime):
-    routesNumber = controller.findCircularRoutesList(graph, vertex, initialTime, finalTime)
+    routesNumber = controller.findCircularRoutesNumber(graph, vertex, initialTime, finalTime)
     return lt.size(routesNumber)
 
   
@@ -101,9 +102,14 @@ def optionFourTwo(graph, vertex, initialTime, finalTime):
     return routesList
 
 
+
 def optionFive(estation,time,graph):
     routesList = controller.rutas_por_min(estation,time,graph)
     return routesList
+
+
+def optionFive():
+    controller.requerimiento3(cont["connections"],cont)
 
 
 def optionSix():
@@ -129,7 +135,11 @@ def optionSeven(graph):
 
 
 def optionEight():
-    None
+    lat1=float(input("ingrese latitud partida"))
+    lon1=float(input("ingrese longitud partida"))
+    lat2=float(input("ingrese latitud final"))
+    lon2=float(input("ingrese longitud final"))
+    controller.requerimiento6(cont["connections"],lat1,lon1,lat2,lon2,cont)
 
 
 def optionNine():
@@ -169,49 +179,55 @@ while True:
 
         
     elif int(inputs[0]) == 4:
-        print('Los tiempos presentados calculan un estimado de 20 minutos que podrá destinar para conocer cada parada')
-        vertex = input('Estación de partida: ')
-        initialTime = input('Tiempo mínimo disponible para el recorrido en minutos: ')
-        finalTime = input('Tiempo máximo disponible para el recorrido en minutos: ')
-        numeroRutas = optionFourOne(graph, vertex, initialTime, finalTime)
-        listaRutas = optionFourTwo(graph, vertex, initialTime, finalTime)
+        print("""Los tiempos presentados se calculan con un estimado de 20 
+                minutos que podrá destinar para conocer cada parada""")
+
+        vertex = input('Indique la estación de partida: ')
+        initialTime = input('Tiempo mínimo disponible para el recorrido, dado en minutos: ')
+        finalTime = input('Tiempo máximo disponible para el recorrido, dado en minutos: ')
+
+        numeroRutas = optionFourOne(cont['connections'], vertex, initialTime, finalTime)
+        listaRutas = optionFourTwo(cont['connections'], vertex, initialTime, finalTime)
+
         print('Se han encontrado ' + numeroRutas + ' rutas.')
         print('Lista de las opciones: \n')
         print(listaRutas)
-
         
     elif int(inputs[0]) == 5:
+
         estation=input('Estación de partida: ')
         time=input("tiempo estimado: ")
         lista_rutas=optionFive(estation, time, cont)
         print(lista_rutas)
 
+        optionFive()
+
+
 
     elif int(inputs[0]) == 6:
-        executiontime = timeit.timeit(optionSix, number=1)
-        print("Tiempo de ejecución: " + str(executiontime))
+        None
 
 
     elif int(inputs[0]) == 7:
+
         respuesta=optionSeven(cont)
         print(respuesta)
 
+        None
+
+
 
     elif int(inputs[0]) == 8:
-        executiontime = timeit.timeit(optionEight, number=1)
-        print("Tiempo de ejecución: " + str(executiontime))
+        optionEight()
 
 
     elif int(inputs[0]) == 9:
-        executiontime = timeit.timeit(optionNine, number=1)
-        print("Tiempo de ejecución: " + str(executiontime))
+        None
 
     
     elif int(inputs[0]) == 10:
-        executiontime = timeit.timeit(optionTen, number=1)
-        print("Tiempo de ejecución: " + str(executiontime))
+        None
 
-        
     else:
         sys.exit(0)
 sys.exit(0)

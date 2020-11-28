@@ -56,7 +56,11 @@ def init():
 #  de datos en los modelos
 # ___________________________________________________
 
+def requerimiento3(grafo,analyzer):
+    model.requerimiento3(grafo,analyzer)
 
+def requerimiento6(grafo,lat1,lon1,lat2,lon2,analyzer):
+    model.distancia(grafo,lat1,lon1,lat2,lon2,analyzer)
 
 def loadTrips(citibike):
 
@@ -127,13 +131,16 @@ def servedRoutes(analyzer):
     return maxvert, maxdeg
 
 
+#Requerimiento 1
 def conectados_estrictamente(graph,v1,v2):
     retorno=model.estrictamente_conectados(graph,v1,v2)
     return print(retorno)
 
 
+#Requerimiento 2
 def findCircularRoutesList(grafo, vertice, tiempoInicial, tiempoFinal):
     return model.createCicleUnderTime(grafo, vertice, tiempoInicial, tiempoFinal)
+
 
 
 def rutas_por_min(estacion,tiempo,grafo):
@@ -168,3 +175,16 @@ def ruta_años(grafo,edad):
     print(edad)
     respuesta=model.rango_edades(grafo,edad)
     return (respuesta)
+
+def findCircularRoutesNumber(grafo, vertice, tiempo1, tiempo2):
+    return model.findCircularRoutesNumber(grafo, vertice, tiempo1, tiempo2)
+
+
+#Requerimiento 3
+def requerimiento3(grafo,analyzer):
+    model.requerimiento3(grafo,analyzer)
+
+
+#Requerimiento 6
+def requerimiento6(grafo,lat1,lon1,lat2,lon2,analyzer):
+    model.distancia(grafo,lat1,lon1,lat2,lon2,analyzer)
