@@ -188,6 +188,7 @@ def DepthFirstSearch2(graph, source,time):
                   "camino":{}
                   }
 
+
         search['visited'] = map.newMap(numelements=g.numVertices(graph),
                                        maptype='PROBING',
                                        comparefunction=graph['comparefunction']
