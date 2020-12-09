@@ -30,6 +30,8 @@ from DISClib.DataStructures import listiterator as it
 from DISClib.ADT import map as map
 from DISClib.ADT import stack as stk
 from DISClib.Utils import error as error
+from DISClib.DataStructures import edge as ed
+from DISClib.ADT.graph import gr
 assert config
 
 
@@ -135,3 +137,140 @@ def pathTo(search, vertex):
         return path
     except Exception as exp:
         error.reraise(exp, 'dfs:pathto')
+
+
+
+def dfsVertex2(search, graph, vertex,time):
+    """
+    Funcion auxiliar para calcular un recorrido DFS
+    Args:
+        search: Estructura para almacenar el recorrido
+        vertex: Vertice de inicio del recorrido.
+
+
+#--------------------------------------------------
+#Dfs para el requerimiento 2
+#--------------------------------------------------
+
+
+def DepthFirstSearchCicles(graph, source):
+    """
+    Genera un recorrido DFS sobre el grafo graph
+    Args:
+        graph:  El grafo a recorrer
+        source: Vertice de inicio del recorrido.
+
+    Returns:
+        Una estructura para determinar los vertices
+        conectados a source
+    Raises:
+        Exception
+    """
+
+    try:
+        adjlst = g.adjacents(graph, vertex)
+        adjslstiter = it.newIterator(adjlst)
+        while (it.hasNext(adjslstiter)):
+            w = it.next(adjslstiter)
+            tiempo=ed.weight(gr.getEdge(graph,vertex,w))
+            if tiempo<=time:
+                time=time-tiempo
+                if vertex in search["camino"].keys():
+                    search["camino"][vertex].append([tiempo,w])
+                else:
+                    search["camino"][vertex]=[[tiempo,w]]
+                   
+                dfsVertex2(search,graph,w,time)
+        return search
+
+
+        
+    except Exception as exp:
+        error.reraise(exp, 'dfs:dfsVertex')
+
+def DepthFirstSearch2(graph, source,time):
+    """
+    Genera un recorrido DFS sobre el grafo graph
+    Args:
+        graph:  El grafo a recorrer
+        source: Vertice de inicio del recorrido.
+
+    try:
+        dfs = {
+                  'source': source,
+                  'visited': None,
+                  'cicles' : None
+                  }
+
+        dfs['visited'] = map.newMap(numelements=g.numVertices(graph),
+                                       maptype='PROBING',
+                                       comparefunction=graph['comparefunction']
+                                       )
+
+        dfs['cicles'] = map.newMap(numelements=g.numVertices(graph),
+                                       maptype='PROBING',
+                                       comparefunction=graph['comparefunction']
+                                       )
+
+        map.put(dfs['visited'], source, {'marked': True, 'edgeTo': None})
+        dfsVertex(dfs, graph, source)
+
+        return dfs
+    except Exception as exp:
+        error.reraise(exp, 'dfs:DFS')
+
+
+
+def dfsVertexCicles(search, graph, vertex):
+    """
+    Funcion auxiliar para calcular un recorrido DFS
+    Args:
+        search: Estructura para almacenar el recorrido
+        vertex: Vertice de inicio del recorrido.
+
+    Returns:
+        Una estructura para determinar los vertices
+        conectados a source
+    Raises:
+        Exception
+    """
+    try:
+
+        search = {
+                  'source': source,
+                  'visited': None,
+                  "camino":{}
+                  }
+
+        search['visited'] = map.newMap(numelements=g.numVertices(graph),
+                                       maptype='PROBING',
+                                       comparefunction=graph['comparefunction']
+                                       )
+
+        map.put(search['visited'], source, {'marked': True, 'edgeTo': None})
+      
+        dfsVertex2(search,graph,source,time)
+        return search
+    except Exception as exp:
+        error.reraise(exp, 'dfs:DFS')
+
+        ruta = 0
+        adjlst = g.adjacents(graph, vertex)
+        adjslstiter = it.newIterator(adjlst)
+        while (it.hasNext(adjslstiter)):
+            w = it.next(adjslstiter)
+            visited = map.get(search['visited'], w)
+
+            if visited == vertex:
+                ruta += 1
+                map.put(search['cicles'],
+                        str(ruta), search['visited'])
+
+            if visited is None:
+                map.put(search['visited'],
+                        w, {'marked': True, 'edgeTo': vertex})
+                dfsVertex(search, graph, w)
+
+        return search
+    except Exception as exp:
+        error.reraise(exp, 'dfs:dfsVertex')

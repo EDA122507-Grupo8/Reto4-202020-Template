@@ -46,7 +46,7 @@ operación seleccionada.
 
 
 servicefile = '201801-2-citibike-tripdata.csv'
-
+cont=0
 initialStation = None
 recursionLimit = 20000
 
@@ -63,9 +63,9 @@ def printMenu():
     print("2- Cargar informacion")
     print("3- Buscar cantidad de cluster de Viajes")
     print("4- Buscar ruta turistica Circular")
-    print("5- Buscar ruta turistica de menor tiempo")
+    print("5- Buscar estaciones críticas")
     print("6- Buscar ruta turistica por resistencia")
-    print("7- Buscar ruta mas corta entre estaciones")
+    print("7- buscar rutas por rango de edades")
     print("8- Buscar ruta de interes turístico")
     print("9- Buscar estaciones para publicidad e identificacion de Bicicletas para mantenimiento")
     print("10- Buscar bicicletas para mantenimiento")
@@ -75,6 +75,7 @@ def printMenu():
 def optionTwo():
     print("\nCargando información de transporte de singapur ....")
     controller.loadTrips(cont)
+    print(cont['stops'])
     numedges = controller.totalConnections(cont)
     numvertex = controller.totalStops(cont)
     print('Numero de vertices: ' + str(numvertex))
@@ -92,7 +93,7 @@ def optionThree():
 
 
 def optionFourOne(graph, vertex, initialTime, finalTime):
-    routesNumber = controller.findCircularRoutesList(graph, vertex, initialTime, finalTime)
+    routesNumber = controller.findCircularRoutesNumber(graph, vertex, initialTime, finalTime)
     return lt.size(routesNumber)
 
   
@@ -101,21 +102,44 @@ def optionFourTwo(graph, vertex, initialTime, finalTime):
     return routesList
 
 
+
+def optionFive(estation,time,graph):
+    routesList = controller.rutas_por_min(estation,time,graph)
+    return routesList
+
+
 def optionFive():
-    mod.distancia(cont["connections"],45.6543,432.2233,42.5444,432.222,cont)
-    
+    controller.requerimiento3(cont["connections"],cont)
 
 
 def optionSix():
     None
 
 
-def optionSeven():
-    None
+def optionSeven(graph):
+    print("rango de edades\n")
+    print("1) 0-10 años\n")
+    print("2) 10-20 años\n")
+    print("3) 20-30 años\n")
+    print("4) 30-40 años\n")
+    print("5) 40-50 años\n")
+    print("6) 50-60 años\n")
+    print("7) +60 años\n")
+    edad=input("")
+    routesList = controller.ruta_años(graph,edad)
+    return routesList
+
+
+
+    
 
 
 def optionEight():
-    None
+    lat1=float(input("ingrese latitud partida"))
+    lon1=float(input("ingrese longitud partida"))
+    lat2=float(input("ingrese latitud final"))
+    lon2=float(input("ingrese longitud final"))
+    controller.requerimiento6(cont["connections"],lat1,lon1,lat2,lon2,cont)
 
 
 def optionNine():
@@ -157,18 +181,27 @@ while True:
     elif int(inputs[0]) == 4:
         print("""Los tiempos presentados se calculan con un estimado de 20 
                 minutos que podrá destinar para conocer cada parada""")
+
         vertex = input('Indique la estación de partida: ')
         initialTime = input('Tiempo mínimo disponible para el recorrido, dado en minutos: ')
         finalTime = input('Tiempo máximo disponible para el recorrido, dado en minutos: ')
-        numeroRutas = optionFourOne(graph, vertex, initialTime, finalTime)
-        listaRutas = optionFourTwo(graph, vertex, initialTime, finalTime)
+
+        numeroRutas = optionFourOne(cont['connections'], vertex, initialTime, finalTime)
+        listaRutas = optionFourTwo(cont['connections'], vertex, initialTime, finalTime)
+
         print('Se han encontrado ' + numeroRutas + ' rutas.')
         print('Lista de las opciones: \n')
         print(listaRutas)
-
         
     elif int(inputs[0]) == 5:
+
+        estation=input('Estación de partida: ')
+        time=input("tiempo estimado: ")
+        lista_rutas=optionFive(estation, time, cont)
+        print(lista_rutas)
+
         optionFive()
+
 
 
     elif int(inputs[0]) == 6:
@@ -176,11 +209,16 @@ while True:
 
 
     elif int(inputs[0]) == 7:
+
+        respuesta=optionSeven(cont)
+        print(respuesta)
+
         None
+
 
 
     elif int(inputs[0]) == 8:
-        None
+        optionEight()
 
 
     elif int(inputs[0]) == 9:
